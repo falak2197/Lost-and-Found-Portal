@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Lost Item | Lost & Found Portal</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="report-lost.css">
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<header>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Lost<span>Found</span>
+        </div>
+
+        <ul class="nav-links">
+
+            <li><a href="index.html">Home</a></li>
+
+            <li><a href="lost-items.html">Lost Items</a></li>
+
+            <li><a href="found-items.html">Found Items</a></li>
+
+            <li><a href="about.html">About</a></li>
+
+            <li><a href="contact.html">Contact</a></li>
+
+        </ul>
+
+        <div class="buttons">
+
+            <a href="login.html" class="login-btn">Login</a>
+
+            <a href="signup.html" class="signup-btn">Sign Up</a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+<!-- ================= PAGE HEADER ================= -->
+
+<section class="page-header">
+
+    <div class="page-header-content">
+
+        <h1>Report Lost Item</h1>
+
+        <p>
+            Provide the details below to create a lost-item report
+            and help others identify your belongings.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- ================= FORM SECTION ================= -->
+
+<section class="form-section">
+
+    <div class="form-container">
+
+        <div class="form-heading">
+
+            <h2>Lost Item Details</h2>
+
+            <p>
+                Fields marked with <span>*</span> are required.
+            </p>
+
+        </div>
+
+        <form action="#" method="post" enctype="multipart/form-data">
+
+            <!-- ================= BASIC DETAILS ================= -->
+
+            <div class="form-group">
+
+                <label for="item-name">
+                    Item Name <span>*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="item-name"
+                    name="item-name"
+                    placeholder="Enter the name of the lost item"
+                    required
+                >
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="category">
+                        Category <span>*</span>
+                    </label>
+
+                    <select
+                        id="category"
+                        name="category"
+                        required
+                    >
+
+                        <option value="">Select Category</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="documents">Documents</option>
+                        <option value="wallet">Wallet / Purse</option>
+                        <option value="keys">Keys</option>
+                        <option value="bags">Bags</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="jewellery">Jewellery</option>
+                        <option value="books">Books</option>
+                        <option value="other">Other</option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="location">
+                        Lost Location <span>*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="location"
+                        name="location"
+                        placeholder="Where did you lose it?"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+            <!-- ================= DESCRIPTION ================= -->
+
+            <div class="form-group">
+
+                <label for="description">
+                    Description <span>*</span>
+                </label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    rows="5"
+                    placeholder="Describe the item, including colour, brand, identifying marks, etc."
+                    required
+                ></textarea>
+
+            </div>
+
+            <!-- ================= DATE & TIME ================= -->
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="lost-date">
+                        Date Lost <span>*</span>
+                    </label>
+
+                    <input
+                        type="date"
+                        id="lost-date"
+                        name="lost-date"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="lost-time">
+                        Approximate Time
+                    </label>
+
+                    <input
+                        type="time"
+                        id="lost-time"
+                        name="lost-time"
+                    >
+
+                </div>
+
+            </div>
+
+            <!-- ================= ADDITIONAL DETAILS ================= -->
+
+            <div class="form-group">
+
+                <label for="additional-details">
+                    Additional Details
+                </label>
+
+                <textarea
+                    id="additional-details"
+                    name="additional-details"
+                    rows="4"
+                    placeholder="Add any other information that may help identify your item..."
+                ></textarea>
+
+            </div>
+
+            <!-- ================= IMAGE UPLOAD ================= -->
+
+            <div class="form-group">
+
+                <label for="item-image">
+                    Upload Item Image
+                </label>
+
+                <div class="file-upload">
+
+                    <input
+                        type="file"
+                        id="item-image"
+                        name="item-image"
+                        accept="image/*"
+                    >
+
+                    <p>
+                        Upload a clear image of your item
+                        (JPG, PNG, JPEG).
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- ================= CONTACT INFORMATION ================= -->
+
+            <div class="form-heading contact-heading">
+
+                <h2>Contact Information</h2>
+
+                <p>
+                    Provide your contact details so someone can reach you
+                    if your item is found.
+                </p>
+
+            </div>
+
+            <div class="form-row">
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Full Name <span>*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address <span>*</span>
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="phone">
+                    Phone Number <span>*</span>
+                </label>
+
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="Enter your phone number"
+                    required
+                >
+
+            </div>
+
+            <!-- ================= FORM ACTIONS ================= -->
+
+            <div class="form-actions">
+
+                <a href="lost-items.html" class="cancel-btn">
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                >
+                    Submit Report
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+<!-- ================= INFORMATION SECTION ================= -->
+
+<section class="info-section">
+
+    <div class="info-card">
+
+        <div class="info-icon">
+            🔒
+        </div>
+
+        <div>
+
+            <h3>Your Information is Safe</h3>
+
+            <p>
+                Your contact information should only be used to help
+                reunite you with your lost belongings.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="info-card">
+
+        <div class="info-icon">
+            📋
+        </div>
+
+        <div>
+
+            <h3>Provide Accurate Details</h3>
+
+            <p>
+                Detailed descriptions and accurate locations make it
+                easier to identify potential matches.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="info-card">
+
+        <div class="info-icon">
+            🤝
+        </div>
+
+        <div>
+
+            <h3>Help the Community</h3>
+
+            <p>
+                Your report can help someone recognize and return
+                your belongings if they are found.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <div class="footer-content">
+
+        <div>
+
+            <h3>LostFound</h3>
+
+            <p>
+                A simple portal to report,
+                browse and recover lost belongings.
+            </p>
+
+        </div>
+
+        <div>
+
+            <h3>Quick Links</h3>
+
+            <ul>
+
+                <li><a href="index.html">Home</a></li>
+
+                <li><a href="lost-items.html">Lost Items</a></li>
+
+                <li><a href="found-items.html">Found Items</a></li>
+
+                <li><a href="login.html">Login</a></li>
+
+            </ul>
+
+        </div>
+
+        <div>
+
+            <h3>Contact</h3>
+
+            <p>Email : support@lostfound.com</p>
+
+            <p>Phone : +91 9876543210</p>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <p class="copyright">
+        © 2026 LostFound Portal. All Rights Reserved.
+    </p>
+
+</footer>
+
+</body>
+</html>
