@@ -1,122 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up | Lost & Found Portal</title>
-
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- External CSS -->
-    <link rel="stylesheet" href="signup.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Create a LostFound Portal account to report lost items, report found belongings, and help your community.">
+<title>Sign Up | Lost &amp; Found Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="signup.css">
 </head>
 <body>
-
-    <div class="container">
-
-        <div class="signup-card">
-
-            <h2>Create Account</h2>
-
-            <p class="subtitle">
-                Join the Lost & Found Portal and help reunite people with their belongings.
-            </p>
-
-            <form action="#" method="post">
-
-                <div class="input-box">
-                    <label for="name">Full Name</label>
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        placeholder="Enter your full name"
-                        required
-                    >
-                </div>
-
-                <div class="input-box">
-                    <label for="email">Email Address</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Enter your email"
-                        required
-                    >
-                </div>
-
-                <div class="input-box">
-                    <label for="phone">Phone Number</label>
-                    <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        placeholder="Enter your phone number"
-                        required
-                    >
-                </div>
-
-                <div class="input-box">
-                    <label for="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Create a password"
-                        required
-                    >
-                </div>
-
-                <div class="input-box">
-                    <label for="confirm-password">Confirm Password</label>
-                    <input
-                        type="password"
-                        id="confirm-password"
-                        name="confirm-password"
-                        placeholder="Confirm your password"
-                        required
-                    >
-                </div>
-
-                <div class="checkbox">
-
-                    <input
-                        type="checkbox"
-                        id="terms"
-                        required
-                    >
-
-                    <label for="terms">
-                        I agree to the Terms & Conditions
-                    </label>
-
-                </div>
-
-                <button type="submit" class="signup-btn">
-                    Create Account
-                </button>
-
-            </form>
-
-            <div class="divider">
-                <span>OR</span>
-            </div>
-
-            <button class="google-btn">
-                Continue with Google
-            </button>
-
-            <p class="login-link">
-                Already have an account?
-                <a href="login.html">Sign In</a>
-            </p>
-
+  <div class="container">
+    <div class="signup-card">
+      <a href="index.html" class="card-logo">Lost<span>Found</span></a>
+      <h2>Create Account</h2>
+      <p class="subtitle">Join the Lost &amp; Found Portal and help reunite people with their belongings.</p>
+      <form action="#" method="post">
+        <div class="input-box">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Enter your full name" required>
         </div>
-
+        <div class="input-box">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="input-box">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" required>
+        </div>
+        <div class="input-box">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Create a password" required>
+        </div>
+        <div class="input-box">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+        </div>
+        <div class="checkbox">
+          <input type="checkbox" id="terms" required>
+          <label for="terms">I agree to the Terms &amp; Conditions</label>
+        </div>
+        <button type="submit" class="signup-submit-btn">Create Account</button>
+      </form>
+      <div class="divider"><span>OR</span></div>
+      <button class="google-btn">Continue with Google</button>
+      <p class="login-link">Already have an account? <a href="login.html">Sign In</a></p>
     </div>
-
+  </div>
 </body>
 </html>

@@ -1,606 +1,127 @@
-/* ==========================================
-   GOOGLE FONT & RESET
-========================================== */
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    background:#f5f7fb;
-    color:#555555;
-    line-height:1.6;
-}
-
-/* ==========================================
-   HEADER
-========================================== */
-
-header{
-    width:100%;
-    background:#ffffff;
-    box-shadow:0 2px 10px rgba(0,0,0,0.08);
-    position:sticky;
-    top:0;
-    left:0;
-    z-index:1000;
-}
-
-/* ==========================================
-   NAVBAR
-========================================== */
-
-.navbar{
-    width:90%;
-    max-width:1200px;
-    margin:auto;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:18px 0;
-}
-
-.logo{
-    font-size:30px;
-    font-weight:700;
-    color:#2563eb;
-    cursor:pointer;
-}
-
-.logo span{
-    color:#f59e0b;
-}
-
-.nav-links{
-    list-style:none;
-    display:flex;
-    gap:30px;
-}
-
-.nav-links li{
-    list-style:none;
-}
-
-.nav-links a{
-    text-decoration:none;
-    color:#333;
-    font-size:16px;
-    font-weight:500;
-    transition:.3s;
-}
-
-.nav-links a:hover{
-    color:#2563eb;
-}
-
-.buttons{
-    display:flex;
-    gap:12px;
-}
-
-.login-btn{
-    text-decoration:none;
-    padding:10px 22px;
-    border:2px solid #2563eb;
-    color:#2563eb;
-    border-radius:8px;
-    transition:.3s;
-    font-weight:500;
-}
-
-.login-btn:hover{
-    background:#2563eb;
-    color:#fff;
-}
-
-.signup-btn{
-    text-decoration:none;
-    padding:10px 22px;
-    background:#2563eb;
-    color:#fff;
-    border-radius:8px;
-    transition:.3s;
-    font-weight:500;
-}
-
-.signup-btn:hover{
-    background:#1d4ed8;
-}
-
-/* ==========================================
-   CONTACT HERO
-========================================== */
-
-.contact-hero{
-    width:90%;
-    max-width:1200px;
-    margin:60px auto 40px;
-    background:#2563eb;
-    border-radius:18px;
-    padding:75px 30px;
-    text-align:center;
-    color:#fff;
-}
-
-.contact-hero-content{
-    max-width:800px;
-    margin:auto;
-}
-
-.contact-hero h1{
-    font-size:48px;
-    font-weight:700;
-    margin-bottom:18px;
-}
-
-.contact-hero p{
-    font-size:18px;
-    line-height:1.8;
-    color:#eef4ff;
-}
-
-/* ==========================================
-   CONTACT SECTION
-========================================== */
-
-.contact-section{
-    width:90%;
-    max-width:1200px;
-    margin:70px auto;
-}
-
-.contact-container{
-    display:grid;
-    grid-template-columns:1fr 1.2fr;
-    gap:50px;
-    align-items:start;
-}
-
-/* ==========================================
-   CONTACT INFORMATION
-========================================== */
-
-.contact-info{
-    padding:10px 10px 10px 0;
-}
-
-.contact-info h2{
-    color:#111827;
-    font-size:34px;
-    margin-bottom:15px;
-}
-
-.info-intro{
-    color:#555555;
-    font-size:16px;
-    line-height:1.8;
-    margin-bottom:30px;
-}
-
-.info-card{
-    display:flex;
-    align-items:center;
-    gap:18px;
-    background:#ffffff;
-    padding:20px;
-    border-radius:12px;
-    margin-bottom:18px;
-    box-shadow:0 6px 18px rgba(0,0,0,0.07);
-    transition:.3s;
-}
-
-.info-card:hover{
-    transform:translateY(-4px);
-    box-shadow:0 10px 25px rgba(0,0,0,0.1);
-}
-
-.info-icon{
-    width:52px;
-    height:52px;
-    flex-shrink:0;
-    background:#eef4ff;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:23px;
-}
-
-.info-card h3{
-    color:#111827;
-    font-size:17px;
-    margin-bottom:4px;
-}
-
-.info-card p{
-    color:#6b7280;
-    font-size:15px;
-}
-
-/* ==========================================
-   SOCIAL LINKS
-========================================== */
-
-.social-section{
-    margin-top:30px;
-}
-
-.social-section h3{
-    color:#111827;
-    font-size:20px;
-    margin-bottom:15px;
-}
-
-.social-links{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-}
-
-.social-links a{
-    text-decoration:none;
-    color:#2563eb;
-    background:#eef4ff;
-    padding:8px 15px;
-    border-radius:7px;
-    font-size:14px;
-    font-weight:500;
-    transition:.3s;
-}
-
-.social-links a:hover{
-    background:#2563eb;
-    color:#fff;
-}
-
-/* ==========================================
-   CONTACT FORM CARD
-========================================== */
-
-.contact-form-card{
-    background:#ffffff;
-    padding:40px;
-    border-radius:15px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.08);
-}
-
-.contact-form-card h2{
-    color:#2563eb;
-    font-size:30px;
-    margin-bottom:8px;
-}
-
-.form-subtitle{
-    color:#6b7280;
-    font-size:15px;
-    margin-bottom:30px;
-}
-
-/* ==========================================
-   INPUT BOXES
-========================================== */
-
-.input-box{
-    margin-bottom:20px;
-}
-
-.input-box label{
-    display:block;
-    margin-bottom:8px;
-    color:#333;
-    font-weight:500;
-}
-
-.input-box input,
-.input-box textarea{
-    width:100%;
-    padding:14px;
-    border:1px solid #d1d5db;
-    border-radius:8px;
-    outline:none;
-    font-size:15px;
-    color:#333;
-    transition:.3s;
-}
-
-.input-box textarea{
-    resize:vertical;
-    min-height:140px;
-}
-
-.input-box input:focus,
-.input-box textarea:focus{
-    border-color:#2563eb;
-    box-shadow:0 0 5px rgba(37,99,235,0.3);
-}
-
-/* ==========================================
-   SEND BUTTON
-========================================== */
-
-.send-btn{
-    width:100%;
-    padding:14px;
-    border:none;
-    border-radius:8px;
-    background:#2563eb;
-    color:#fff;
-    font-size:16px;
-    font-weight:600;
-    cursor:pointer;
-    transition:.3s;
-}
-
-.send-btn:hover{
-    background:#1d4ed8;
-    transform:translateY(-2px);
-}
-
-/* ==========================================
-   CALL TO ACTION
-========================================== */
-
-.cta{
-    width:90%;
-    max-width:1200px;
-    margin:90px auto;
-    background:#2563eb;
-    color:#fff;
-    text-align:center;
-    padding:60px 30px;
-    border-radius:18px;
-}
-
-.cta h2{
-    color:#fff;
-    font-size:38px;
-    margin-bottom:20px;
-}
-
-.cta p{
-    font-size:17px;
-    margin-bottom:35px;
-}
-
-.cta-buttons{
-    display:flex;
-    justify-content:center;
-    gap:18px;
-    flex-wrap:wrap;
-}
-
-.primary-btn{
-    text-decoration:none;
-    background:#fff;
-    color:#2563eb;
-    padding:14px 28px;
-    border-radius:10px;
-    transition:.3s;
-    font-weight:600;
-}
-
-.primary-btn:hover{
-    background:#eef4ff;
-    transform:translateY(-3px);
-}
-
-.secondary-btn{
-    text-decoration:none;
-    border:2px solid #fff;
-    color:#fff;
-    padding:12px 28px;
-    border-radius:10px;
-    transition:.3s;
-    font-weight:600;
-}
-
-.secondary-btn:hover{
-    background:#fff;
-    color:#2563eb;
-}
-
-/* ==========================================
-   FOOTER
-========================================== */
-
-footer{
-    background:#111827;
-    color:#fff;
-    margin-top:70px;
-    padding-top:50px;
-}
-
-.footer-content{
-    width:90%;
-    max-width:1200px;
-    margin:auto;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:35px;
-    padding-bottom:40px;
-}
-
-.footer-content h3{
-    margin-bottom:18px;
-    font-size:22px;
-}
-
-.footer-content p{
-    color:#d1d5db;
-    line-height:1.8;
-}
-
-.footer-content ul{
-    list-style:none;
-}
-
-.footer-content ul li{
-    margin-bottom:12px;
-}
-
-.footer-content ul li a{
-    text-decoration:none;
-    color:#d1d5db;
-    transition:.3s;
-}
-
-.footer-content ul li a:hover{
-    color:#fff;
-}
-
-footer hr{
-    border:none;
-    border-top:1px solid rgba(255,255,255,.15);
-}
-
-.copyright{
-    text-align:center;
-    padding:18px;
-    color:#d1d5db;
-    font-size:14px;
-}
-
-/* ==========================================
-   RESPONSIVE
-========================================== */
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+html{scroll-behavior:smooth;}
+body{background:#f5f7fb;color:#333;line-height:1.6;}
+
+/* HEADER */
+header{width:100%;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,0.08);position:sticky;top:0;left:0;z-index:1000;}
+
+/* NAVBAR */
+.navbar{width:90%;max-width:1200px;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:16px 0;gap:20px;flex-wrap:wrap;}
+.logo{font-size:28px;font-weight:700;color:#2563eb;text-decoration:none;cursor:pointer;flex-shrink:0;}
+.logo span{color:#f59e0b;}
+.nav-links{list-style:none;display:flex;gap:26px;align-items:center;}
+.nav-links li{list-style:none;}
+.nav-links a{text-decoration:none;color:#333;font-size:15px;font-weight:500;transition:.3s;}
+.nav-links a:hover{color:#2563eb;}
+.buttons{display:flex;gap:10px;align-items:center;flex-shrink:0;}
+.login-btn{text-decoration:none;padding:9px 20px;border:2px solid #2563eb;color:#2563eb;border-radius:8px;transition:.3s;font-weight:500;font-size:14px;}
+.login-btn:hover{background:#2563eb;color:#fff;}
+.signup-btn{text-decoration:none;padding:9px 20px;background:#2563eb;color:#fff;border-radius:8px;transition:.3s;font-weight:500;font-size:14px;}
+.signup-btn:hover{background:#1d4ed8;}
+.nav-toggle{display:none;}
+.hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;cursor:pointer;padding:4px;order:3;}
+.hamburger span{display:block;width:24px;height:2px;background:#333;border-radius:2px;transition:.3s;}
+.nav-toggle:checked ~ .hamburger span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-toggle:checked ~ .hamburger span:nth-child(2){opacity:0;}
+.nav-toggle:checked ~ .hamburger span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* CONTACT HERO */
+.contact-hero{width:90%;max-width:1200px;margin:60px auto 40px;background:#2563eb;border-radius:18px;padding:75px 30px;text-align:center;color:#fff;}
+.contact-hero-content{max-width:800px;margin:auto;}
+.contact-hero h1{font-size:46px;font-weight:700;margin-bottom:16px;}
+.contact-hero p{font-size:17px;line-height:1.8;color:#eef4ff;}
+
+/* CONTACT SECTION */
+.contact-section{width:90%;max-width:1200px;margin:70px auto;}
+.contact-container{display:grid;grid-template-columns:1fr 1.2fr;gap:50px;align-items:start;}
+
+/* CONTACT INFO */
+.contact-info{padding:10px 10px 10px 0;}
+.contact-info h2{color:#111827;font-size:32px;margin-bottom:14px;}
+.info-intro{color:#555;font-size:15px;line-height:1.8;margin-bottom:28px;}
+.info-card{display:flex;align-items:center;gap:16px;background:#fff;padding:18px;border-radius:12px;margin-bottom:16px;box-shadow:0 6px 18px rgba(0,0,0,0.07);transition:.3s;}
+.info-card:hover{transform:translateY(-4px);box-shadow:0 10px 25px rgba(0,0,0,0.1);}
+.info-icon{width:50px;height:50px;flex-shrink:0;background:#eef4ff;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:22px;}
+.info-card h3{color:#111827;font-size:16px;margin-bottom:3px;}
+.info-card p{color:#6b7280;font-size:14px;}
+.social-section{margin-top:28px;}
+.social-section h3{color:#111827;font-size:18px;margin-bottom:13px;}
+.social-links{display:flex;flex-wrap:wrap;gap:9px;}
+.social-links a{text-decoration:none;color:#2563eb;background:#eef4ff;padding:7px 14px;border-radius:7px;font-size:13px;font-weight:500;transition:.3s;}
+.social-links a:hover{background:#2563eb;color:#fff;}
+
+/* CONTACT FORM */
+.contact-form-card{background:#fff;padding:38px;border-radius:15px;box-shadow:0 10px 25px rgba(0,0,0,0.08);}
+.contact-form-card h2{color:#2563eb;font-size:28px;margin-bottom:7px;}
+.form-subtitle{color:#6b7280;font-size:14px;margin-bottom:28px;}
+.input-box{margin-bottom:18px;}
+.input-box label{display:block;margin-bottom:7px;color:#333;font-weight:500;font-size:14px;}
+.input-box input,.input-box textarea{width:100%;padding:13px;border:1px solid #d1d5db;border-radius:8px;outline:none;font-size:14px;color:#333;transition:.3s;}
+.input-box textarea{resize:vertical;min-height:130px;}
+.input-box input:focus,.input-box textarea:focus{border-color:#2563eb;box-shadow:0 0 5px rgba(37,99,235,0.25);}
+.send-btn{width:100%;padding:14px;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:15px;font-weight:600;cursor:pointer;transition:.3s;}
+.send-btn:hover{background:#1d4ed8;transform:translateY(-2px);}
+
+/* CTA */
+.cta{width:90%;max-width:1200px;margin:90px auto;background:#2563eb;color:#fff;text-align:center;padding:60px 30px;border-radius:18px;}
+.cta h2{color:#fff;font-size:36px;margin-bottom:16px;}
+.cta p{font-size:16px;margin-bottom:30px;}
+.cta-buttons{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;}
+.primary-btn{display:inline-block;text-decoration:none;background:#fff;color:#2563eb;padding:13px 26px;border-radius:10px;transition:.3s;font-weight:600;}
+.primary-btn:hover{background:#eef4ff;transform:translateY(-3px);}
+.secondary-btn{display:inline-block;text-decoration:none;border:2px solid #fff;color:#fff;padding:11px 26px;border-radius:10px;transition:.3s;font-weight:600;}
+.secondary-btn:hover{background:#fff;color:#2563eb;}
+
+/* FOOTER */
+footer{background:#111827;color:#fff;margin-top:70px;padding-top:50px;}
+.footer-content{width:90%;max-width:1200px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px;padding-bottom:40px;}
+.footer-content h3{margin-bottom:15px;font-size:20px;}
+.footer-content p{color:#d1d5db;line-height:1.8;font-size:14px;}
+.footer-content ul{list-style:none;}
+.footer-content ul li{margin-bottom:10px;}
+.footer-content ul li a{text-decoration:none;color:#d1d5db;font-size:14px;transition:.3s;}
+.footer-content ul li a:hover{color:#fff;}
+footer hr{border:none;border-top:1px solid rgba(255,255,255,.15);}
+.copyright{text-align:center;padding:18px;color:#d1d5db;font-size:13px;}
+
+/* RESPONSIVE */
 @media(max-width:992px){
-
-    .navbar{
-        flex-direction:column;
-        gap:20px;
-    }
-
-    .contact-container{
-        grid-template-columns:1fr;
-        gap:40px;
-    }
-
-    .contact-info{
-        padding:0;
-    }
-
+  .contact-container{grid-template-columns:1fr;gap:36px;}
+  .contact-info{padding:0;}
 }
 
 @media(max-width:768px){
-
-    .nav-links{
-        flex-wrap:wrap;
-        justify-content:center;
-        gap:15px;
-    }
-
-    .contact-hero{
-        padding:60px 25px;
-    }
-
-    .contact-hero h1{
-        font-size:40px;
-    }
-
-    .contact-hero p{
-        font-size:16px;
-    }
-
-    .contact-info h2{
-        font-size:30px;
-    }
-
-    .contact-form-card{
-        padding:35px 25px;
-    }
-
-    .cta{
-        padding:50px 20px;
-    }
-
-    .cta h2{
-        font-size:30px;
-    }
-
+  .hamburger{display:flex;}
+  .nav-links{display:none;width:100%;flex-direction:column;gap:0;background:#fff;order:4;}
+  .nav-toggle:checked ~ .nav-links{display:flex;}
+  .nav-links li{border-top:1px solid #f0f0f0;}
+  .nav-links a{display:block;padding:12px 0;}
+  .buttons{order:2;}
+  .contact-hero{padding:55px 22px;}
+  .contact-hero h1{font-size:36px;}
+  .contact-hero p{font-size:15px;}
+  .contact-info h2{font-size:26px;}
+  .contact-form-card{padding:30px 22px;}
+  .cta{padding:45px 18px;}
+  .cta h2{font-size:28px;}
 }
 
 @media(max-width:480px){
-
-    .logo{
-        font-size:26px;
-    }
-
-    .buttons{
-        width:100%;
-        flex-direction:column;
-    }
-
-    .login-btn,
-    .signup-btn{
-        width:100%;
-        text-align:center;
-    }
-
-    .contact-hero{
-        width:92%;
-        padding:50px 20px;
-    }
-
-    .contact-hero h1{
-        font-size:30px;
-    }
-
-    .contact-hero p{
-        font-size:15px;
-    }
-
-    .contact-section{
-        width:92%;
-    }
-
-    .contact-info h2{
-        font-size:28px;
-    }
-
-    .contact-form-card{
-        padding:30px 20px;
-    }
-
-    .contact-form-card h2{
-        font-size:26px;
-    }
-
-    .info-card{
-        padding:17px;
-    }
-
-    .social-links{
-        gap:8px;
-    }
-
-    .cta{
-        width:92%;
-    }
-
-    .cta h2{
-        font-size:26px;
-    }
-
-    .cta p{
-        font-size:15px;
-    }
-
-    .cta-buttons{
-        flex-direction:column;
-    }
-
-    .primary-btn,
-    .secondary-btn{
-        width:100%;
-        text-align:center;
-    }
-
+  .logo{font-size:24px;}
+  .buttons{flex-direction:column;width:100%;order:5;}
+  .login-btn,.signup-btn{width:100%;text-align:center;}
+  .contact-hero{width:92%;padding:45px 18px;}
+  .contact-hero h1{font-size:28px;}
+  .contact-hero p{font-size:14px;}
+  .contact-section{width:92%;}
+  .contact-info h2{font-size:24px;}
+  .contact-form-card{padding:26px 18px;}
+  .contact-form-card h2{font-size:22px;}
+  .info-card{padding:15px;}
+  .social-links{gap:7px;}
+  .cta{width:92%;}
+  .cta h2{font-size:24px;}
+  .cta p{font-size:14px;}
+  .cta-buttons{flex-direction:column;}
+  .primary-btn,.secondary-btn{width:100%;text-align:center;}
 }

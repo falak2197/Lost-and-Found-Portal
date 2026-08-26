@@ -1,608 +1,247 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Found Items | Lost & Found Portal</title>
-
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- External CSS -->
-    <link rel="stylesheet" href="found-items.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Browse belongings that have been found and reported by members of the LostFound community.">
+<title>Found Items | Lost &amp; Found Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="found-items.css">
 </head>
 <body>
 
-<!-- ================= NAVBAR ================= -->
-
 <header>
-
-    <nav class="navbar">
-
-        <div class="logo">
-            Lost<span>Found</span>
-        </div>
-
-        <ul class="nav-links">
-
-            <li><a href="index.html">Home</a></li>
-
-            <li><a href="lost-items.html">Lost Items</a></li>
-
-            <li><a href="found-items.html">Found Items</a></li>
-
-            <li><a href="about.html">About</a></li>
-
-            <li><a href="contact.html">Contact</a></li>
-
-        </ul>
-
-        <div class="buttons">
-
-            <a href="login.html" class="login-btn">Login</a>
-
-            <a href="signup.html" class="signup-btn">Sign Up</a>
-
-        </div>
-
-    </nav>
-
+  <nav class="navbar">
+    <a href="index.html" class="logo">Lost<span>Found</span></a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-hidden="true">
+    <label for="nav-toggle" class="hamburger" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </label>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="lost-items.html">Lost Items</a></li>
+      <li><a href="found-items.html">Found Items</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="buttons">
+      <a href="login.html" class="login-btn">Login</a>
+      <a href="signup.html" class="signup-btn">Sign Up</a>
+    </div>
+  </nav>
 </header>
 
-<!-- ================= PAGE HERO ================= -->
-
 <section class="page-hero">
-
-    <div class="page-hero-content">
-
-        <h1>Found Items</h1>
-
-        <p>
-            Browse belongings that have been found and reported
-            by members of the LostFound community.
-        </p>
-
-    </div>
-
+  <div class="page-hero-content">
+    <h1>Found Items</h1>
+    <p>Browse belongings that have been found and reported by members of the LostFound community.</p>
+  </div>
 </section>
-
-<!-- ================= SEARCH & FILTER ================= -->
 
 <section class="filter-section">
-
-    <div class="filter-container">
-
-        <div class="search-box">
-
-            <label for="search">Search Items</label>
-
-            <input
-                type="search"
-                id="search"
-                name="search"
-                placeholder="Search by item name or keyword..."
-            >
-
-        </div>
-
-        <div class="filter-box">
-
-            <label for="category">Category</label>
-
-            <select id="category" name="category">
-
-                <option value="">All Categories</option>
-                <option value="electronics">Electronics</option>
-                <option value="documents">Documents</option>
-                <option value="wallet">Wallet / Purse</option>
-                <option value="keys">Keys</option>
-                <option value="bags">Bags</option>
-                <option value="clothing">Clothing</option>
-                <option value="jewellery">Jewellery</option>
-                <option value="other">Other</option>
-
-            </select>
-
-        </div>
-
-        <div class="filter-box">
-
-            <label for="location">Location</label>
-
-            <select id="location" name="location">
-
-                <option value="">All Locations</option>
-                <option value="college">College / University</option>
-                <option value="market">Market</option>
-                <option value="transport">Bus / Railway Station</option>
-                <option value="office">Office</option>
-                <option value="park">Park</option>
-                <option value="shopping-mall">Shopping Mall</option>
-                <option value="other">Other</option>
-
-            </select>
-
-        </div>
-
-        <div class="filter-box">
-
-            <label for="date">Date</label>
-
-            <input
-                type="date"
-                id="date"
-                name="date"
-            >
-
-        </div>
-
-        <button type="button" class="search-btn">
-            Search
-        </button>
-
+  <div class="filter-container">
+    <div class="search-box">
+      <label for="search">Search Items</label>
+      <input type="search" id="search" name="search" placeholder="Search by item name or keyword...">
     </div>
-
+    <div class="filter-box">
+      <label for="category">Category</label>
+      <select id="category" name="category">
+        <option value="">All Categories</option>
+        <option value="electronics">Electronics</option>
+        <option value="documents">Documents</option>
+        <option value="wallet">Wallet / Purse</option>
+        <option value="keys">Keys</option>
+        <option value="bags">Bags</option>
+        <option value="clothing">Clothing</option>
+        <option value="jewellery">Jewellery</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="filter-box">
+      <label for="location">Location</label>
+      <select id="location" name="location">
+        <option value="">All Locations</option>
+        <option value="college">College / University</option>
+        <option value="market">Market</option>
+        <option value="transport">Bus / Railway Station</option>
+        <option value="office">Office</option>
+        <option value="park">Park</option>
+        <option value="shopping-mall">Shopping Mall</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="filter-box">
+      <label for="date">Date</label>
+      <input type="date" id="date" name="date">
+    </div>
+    <button type="button" class="search-btn">Search</button>
+  </div>
 </section>
-
-<!-- ================= FOUND ITEMS ================= -->
 
 <section class="items-section">
+  <div class="section-heading">
+    <div>
+      <h2>Recently Reported Found Items</h2>
+      <p>Browse through recently reported belongings found by users.</p>
+    </div>
+    <a href="report-found.html" class="report-btn">+ Report Found Item</a>
+  </div>
+  <div class="items-grid">
 
-    <div class="section-heading">
-
-        <div>
-
-            <h2>Recently Reported Found Items</h2>
-
-            <p>
-                Browse through recently reported belongings found by users.
-            </p>
-
+    <div class="item-card">
+      <div class="item-image">
+        <img src="images/found-items/wallet.jpg" alt="Brown leather wallet">
+        <span class="status-badge">Found</span>
+      </div>
+      <div class="item-content">
+        <h3>Brown Leather Wallet</h3>
+        <span class="category">Wallet / Purse</span>
+        <p>Brown leather wallet found with several cards inside. The owner can verify its details.</p>
+        <div class="item-details">
+          <div><strong>Location</strong><span>City Market</span></div>
+          <div><strong>Date</strong><span>16 Aug 2026</span></div>
         </div>
-
-        <a href="report-found.html" class="report-btn">
-            + Report Found Item
-        </a>
-
+        <div class="card-buttons">
+          <a href="#" class="view-btn">View Details</a>
+          <a href="#" class="contact-btn">Contact</a>
+        </div>
+      </div>
     </div>
 
-    <div class="items-grid">
-
-        <!-- ================= ITEM CARD 1 ================= -->
-
-        <div class="item-card">
-
-            <div class="item-image">
-
-                <img
-                    src="images/found-items/wallet.jpg"
-                    alt="Brown leather wallet"
-                >
-
-                <span class="status-badge">
-                    Found
-                </span>
-
-            </div>
-
-            <div class="item-content">
-
-                <h3>Brown Leather Wallet</h3>
-
-                <span class="category">
-                    Wallet / Purse
-                </span>
-
-                <p>
-                    Brown leather wallet found with several cards
-                    inside. The owner can verify its details.
-                </p>
-
-                <div class="item-details">
-
-                    <div>
-                        <strong>Location</strong>
-                        <span>City Market</span>
-                    </div>
-
-                    <div>
-                        <strong>Date</strong>
-                        <span>16 Aug 2026</span>
-                    </div>
-
-                </div>
-
-                <div class="card-buttons">
-
-                    <a href="#" class="view-btn">
-                        View Details
-                    </a>
-
-                    <a href="#" class="contact-btn">
-                        Contact
-                    </a>
-
-                </div>
-
-            </div>
-
+    <div class="item-card">
+      <div class="item-image">
+        <img src="images/found-items/phone.jpg" alt="Black smartphone">
+        <span class="status-badge">Found</span>
+      </div>
+      <div class="item-content">
+        <h3>Black Smartphone</h3>
+        <span class="category">Electronics</span>
+        <p>Black smartphone found near a public transport area. It has a dark protective case.</p>
+        <div class="item-details">
+          <div><strong>Location</strong><span>Bus Stand</span></div>
+          <div><strong>Date</strong><span>15 Aug 2026</span></div>
         </div>
-
-        <!-- ================= ITEM CARD 2 ================= -->
-
-        <div class="item-card">
-
-            <div class="item-image">
-
-                <img
-                    src="images/found-items/phone.jpg"
-                    alt="Smartphone"
-                >
-
-                <span class="status-badge">
-                    Found
-                </span>
-
-            </div>
-
-            <div class="item-content">
-
-                <h3>Black Smartphone</h3>
-
-                <span class="category">
-                    Electronics
-                </span>
-
-                <p>
-                    Black smartphone found near a public transport
-                    area. It has a dark protective case.
-                </p>
-
-                <div class="item-details">
-
-                    <div>
-                        <strong>Location</strong>
-                        <span>Bus Stand</span>
-                    </div>
-
-                    <div>
-                        <strong>Date</strong>
-                        <span>15 Aug 2026</span>
-                    </div>
-
-                </div>
-
-                <div class="card-buttons">
-
-                    <a href="#" class="view-btn">
-                        View Details
-                    </a>
-
-                    <a href="#" class="contact-btn">
-                        Contact
-                    </a>
-
-                </div>
-
-            </div>
-
+        <div class="card-buttons">
+          <a href="#" class="view-btn">View Details</a>
+          <a href="#" class="contact-btn">Contact</a>
         </div>
-
-        <!-- ================= ITEM CARD 3 ================= -->
-
-        <div class="item-card">
-
-            <div class="item-image">
-
-                <img
-                    src="images/found-items/keys.jpg"
-                    alt="Set of keys"
-                >
-
-                <span class="status-badge">
-                    Found
-                </span>
-
-            </div>
-
-            <div class="item-content">
-
-                <h3>Set of Silver Keys</h3>
-
-                <span class="category">
-                    Keys
-                </span>
-
-                <p>
-                    A set of silver keys attached to a small
-                    keychain found near a park entrance.
-                </p>
-
-                <div class="item-details">
-
-                    <div>
-                        <strong>Location</strong>
-                        <span>City Park</span>
-                    </div>
-
-                    <div>
-                        <strong>Date</strong>
-                        <span>14 Aug 2026</span>
-                    </div>
-
-                </div>
-
-                <div class="card-buttons">
-
-                    <a href="#" class="view-btn">
-                        View Details
-                    </a>
-
-                    <a href="#" class="contact-btn">
-                        Contact
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ================= ITEM CARD 4 ================= -->
-
-        <div class="item-card">
-
-            <div class="item-image">
-
-                <img
-                    src="images/found-items/id-card.jpg"
-                    alt="College identification card"
-                >
-
-                <span class="status-badge">
-                    Found
-                </span>
-
-            </div>
-
-            <div class="item-content">
-
-                <h3>College ID Card</h3>
-
-                <span class="category">
-                    Documents
-                </span>
-
-                <p>
-                    Student identification card found inside a
-                    blue card holder on a college campus.
-                </p>
-
-                <div class="item-details">
-
-                    <div>
-                        <strong>Location</strong>
-                        <span>College Campus</span>
-                    </div>
-
-                    <div>
-                        <strong>Date</strong>
-                        <span>13 Aug 2026</span>
-                    </div>
-
-                </div>
-
-                <div class="card-buttons">
-
-                    <a href="#" class="view-btn">
-                        View Details
-                    </a>
-
-                    <a href="#" class="contact-btn">
-                        Contact
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ================= ITEM CARD 5 ================= -->
-
-        <div class="item-card">
-
-            <div class="item-image">
-
-                <img
-                    src="images/found-items/watch.jpg"
-                    alt="Silver wrist watch"
-                >
-
-                <span class="status-badge">
-                    Found
-                </span>
-
-            </div>
-
-            <div class="item-content">
-
-                <h3>Silver Wrist Watch</h3>
-
-                <span class="category">
-                    Jewellery
-                </span>
-
-                <p>
-                    Silver coloured wrist watch with a round dial
-                    and metal strap found in a shopping area.
-                </p>
-
-                <div class="item-details">
-
-                    <div>
-                        <strong>Location</strong>
-                        <span>Shopping Mall</span>
-                    </div>
-
-                    <div>
-                        <strong>Date</strong>
-                        <span>11 Aug 2026</span>
-                    </div>
-
-                </div>
-
-                <div class="card-buttons">
-
-                    <a href="#" class="view-btn">
-                        View Details
-                    </a>
-
-                    <a href="#" class="contact-btn">
-                        Contact
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ================= ITEM CARD 6 ================= -->
-
-        <div class="item-card">
-
-            <div class="item-image">
-
-                <img
-                    src="images/found-items/bag.jpg"
-                    alt="Blue backpack"
-                >
-
-                <span class="status-badge">
-                    Found
-                </span>
-
-            </div>
-
-            <div class="item-content">
-
-                <h3>Blue Backpack</h3>
-
-                <span class="category">
-                    Bags
-                </span>
-
-                <p>
-                    Medium-sized blue backpack found near a railway
-                    station with several compartments.
-                </p>
-
-                <div class="item-details">
-
-                    <div>
-                        <strong>Location</strong>
-                        <span>Railway Station</span>
-                    </div>
-
-                    <div>
-                        <strong>Date</strong>
-                        <span>10 Aug 2026</span>
-                    </div>
-
-                </div>
-
-                <div class="card-buttons">
-
-                    <a href="#" class="view-btn">
-                        View Details
-                    </a>
-
-                    <a href="#" class="contact-btn">
-                        Contact
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
+      </div>
     </div>
 
+    <div class="item-card">
+      <div class="item-image">
+        <img src="images/found-items/keys.jpg" alt="Set of silver keys">
+        <span class="status-badge">Found</span>
+      </div>
+      <div class="item-content">
+        <h3>Set of Silver Keys</h3>
+        <span class="category">Keys</span>
+        <p>A set of silver keys attached to a small keychain found near a park entrance.</p>
+        <div class="item-details">
+          <div><strong>Location</strong><span>City Park</span></div>
+          <div><strong>Date</strong><span>14 Aug 2026</span></div>
+        </div>
+        <div class="card-buttons">
+          <a href="#" class="view-btn">View Details</a>
+          <a href="#" class="contact-btn">Contact</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-image">
+        <img src="images/found-items/id-card.jpg" alt="College identification card">
+        <span class="status-badge">Found</span>
+      </div>
+      <div class="item-content">
+        <h3>College ID Card</h3>
+        <span class="category">Documents</span>
+        <p>Student identification card found inside a blue card holder on a college campus.</p>
+        <div class="item-details">
+          <div><strong>Location</strong><span>College Campus</span></div>
+          <div><strong>Date</strong><span>13 Aug 2026</span></div>
+        </div>
+        <div class="card-buttons">
+          <a href="#" class="view-btn">View Details</a>
+          <a href="#" class="contact-btn">Contact</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-image">
+        <img src="images/found-items/watch.jpg" alt="Silver wrist watch">
+        <span class="status-badge">Found</span>
+      </div>
+      <div class="item-content">
+        <h3>Silver Wrist Watch</h3>
+        <span class="category">Jewellery</span>
+        <p>Silver coloured wrist watch with a round dial and metal strap found in a shopping area.</p>
+        <div class="item-details">
+          <div><strong>Location</strong><span>Shopping Mall</span></div>
+          <div><strong>Date</strong><span>11 Aug 2026</span></div>
+        </div>
+        <div class="card-buttons">
+          <a href="#" class="view-btn">View Details</a>
+          <a href="#" class="contact-btn">Contact</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-image">
+        <img src="images/found-items/bag.jpg" alt="Blue backpack">
+        <span class="status-badge">Found</span>
+      </div>
+      <div class="item-content">
+        <h3>Blue Backpack</h3>
+        <span class="category">Bags</span>
+        <p>Medium-sized blue backpack found near a railway station with several compartments.</p>
+        <div class="item-details">
+          <div><strong>Location</strong><span>Railway Station</span></div>
+          <div><strong>Date</strong><span>10 Aug 2026</span></div>
+        </div>
+        <div class="card-buttons">
+          <a href="#" class="view-btn">View Details</a>
+          <a href="#" class="contact-btn">Contact</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>
-
-<!-- ================= CTA ================= -->
 
 <section class="cta">
-
-    <h2>Found Something?</h2>
-
-    <p>
-        Help someone recover their belongings by reporting the
-        item you found.
-    </p>
-
-    <a href="report-found.html" class="primary-btn">
-        Report Found Item
-    </a>
-
+  <h2>Found Something?</h2>
+  <p>Help someone recover their belongings by reporting the item you found.</p>
+  <a href="report-found.html" class="primary-btn">Report Found Item</a>
 </section>
 
-<!-- ================= FOOTER ================= -->
-
 <footer>
-
-    <div class="footer-content">
-
-        <div>
-
-            <h3>LostFound</h3>
-
-            <p>
-                A simple portal to report,
-                browse and recover lost belongings.
-            </p>
-
-        </div>
-
-        <div>
-
-            <h3>Quick Links</h3>
-
-            <ul>
-
-                <li><a href="index.html">Home</a></li>
-
-                <li><a href="lost-items.html">Lost Items</a></li>
-
-                <li><a href="found-items.html">Found Items</a></li>
-
-                <li><a href="login.html">Login</a></li>
-
-            </ul>
-
-        </div>
-
-        <div>
-
-            <h3>Contact</h3>
-
-            <p>Email : support@lostfound.com</p>
-
-            <p>Phone : +91 9876543210</p>
-
-        </div>
-
+  <div class="footer-content">
+    <div>
+      <h3>LostFound</h3>
+      <p>A simple portal to report, browse and recover lost belongings.</p>
     </div>
-
-    <hr>
-
-    <p class="copyright">
-        © 2026 LostFound Portal. All Rights Reserved.
-    </p>
-
+    <div>
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="lost-items.html">Lost Items</a></li>
+        <li><a href="found-items.html">Found Items</a></li>
+        <li><a href="login.html">Login</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Contact</h3>
+      <p>Email : support@lostfound.com</p>
+      <p>Phone : +91 9876543210</p>
+    </div>
+  </div>
+  <hr>
+  <p class="copyright">© 2026 LostFound Portal. All Rights Reserved.</p>
 </footer>
 
 </body>
