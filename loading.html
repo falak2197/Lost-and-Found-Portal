@@ -1,63 +1,86 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta http-equiv="refresh" content="5,index.html">
-<style>
-body{
-    margin:0;
-    background:#F5F7FB;
-    font-family:Arial, sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-}
-.main{
-    text-align:center;
-}
-h1{
-    color:#111827;
-    margin-bottom:40px;
-}
-.circle{
-    width:180px;
-    height:180px;
-    margin:auto;
-    border-radius:50%;
-    background:conic-gradient(#2563EB 0deg,#2563EB 0deg,#EEF4FF 0deg);
-    animation:fillCircle 5s linear forwards;
-    position:relative;
-    box-shadow:0px 8px 20px rgba(0,0,0,0.08);
-}
-.circle::before{
-    content:"";
-    position:absolute;
-    width:140px;
-    height:140px;
-    background:#FFFFFF;
-    border-radius:50%;
-    top:20px;
-    left:20px;
-}
-@keyframes fillCircle{
-    0%{background:conic-gradient(#2563EB 0deg,#EEF4FF 0deg);}
-    25%{background:conic-gradient(#2563EB 90deg,#EEF4FF 90deg);}
-    50%{background:conic-gradient(#2563EB 180deg,#EEF4FF 180deg);}
-    75%{background:conic-gradient(#2563EB 270deg,#EEF4FF 270deg);}
-    100%{background:conic-gradient(#2563EB 360deg,#EEF4FF 360deg);}
-}
-p{
-    margin-top:30px;
-    color:#555555;
-    font-size:20px;
-}
-</style>
+    <meta http-equiv="refresh" content="5,index.html">
+    <style>
+        body {
+            margin: 0;
+            background: #F5F7FB;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .main {
+            text-align: center;
+        }
+
+        h1 {
+            color: #111827;
+            margin-bottom: 40px;
+        }
+
+        .circle {
+            width: 180px;
+            height: 180px;
+            margin: auto;
+            border-radius: 50%;
+            background: conic-gradient(#2563EB 0deg, #2563EB 0deg, #EEF4FF 0deg);
+            animation: fillCircle 5s linear forwards;
+            position: relative;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .circle::before {
+            content: "";
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            top: 20px;
+            left: 20px;
+        }
+
+        @keyframes fillCircle {
+            0% {
+                background: conic-gradient(#2563EB 0deg, #EEF4FF 0deg);
+            }
+
+            25% {
+                background: conic-gradient(#2563EB 90deg, #EEF4FF 90deg);
+            }
+
+            50% {
+                background: conic-gradient(#2563EB 180deg, #EEF4FF 180deg);
+            }
+
+            75% {
+                background: conic-gradient(#2563EB 270deg, #EEF4FF 270deg);
+            }
+
+            100% {
+                background: conic-gradient(#2563EB 360deg, #EEF4FF 360deg);
+            }
+        }
+
+        p {
+            margin-top: 30px;
+            color: #555555;
+            font-size: 20px;
+        }
+    </style>
 </head>
+
 <body>
-<div class="main">
-<h1>Welcome</h1>
-<div class="circle"></div>
-<p>Please wait while the website loads.</p>
-</div>
+    <div class="main">
+        <h1>Welcome</h1>
+        <div class="circle"></div>
+        <p>Please wait while the website loads.</p>
+    </div>
 </body>
+
 </html>

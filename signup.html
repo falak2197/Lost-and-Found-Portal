@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Create a LostFound Portal account to report lost items, report found belongings, and help your community.">
-<title>Sign Up | Lost &amp; Found Portal</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="signup.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Create a LostFound Portal account to report lost items, report found belongings, and help your community.">
+  <title>Sign Up | Lost &amp; Found Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="signup.css">
+  <link rel="stylesheet" href="modal.css">
 </head>
+
 <body>
   <div class="container">
     <div class="signup-card">
       <a href="index.html" class="card-logo">Lost<span>Found</span></a>
       <h2>Create Account</h2>
       <p class="subtitle">Join the Lost &amp; Found Portal and help reunite people with their belongings.</p>
-      <form action="#" method="post">
+      <form action="#" method="post" id="signup-form">
+        <!-- Success and error messages -->
+        <div class="success-message" id="success-message"></div>
+        <div class="error-message" id="error-message"></div>
         <div class="input-box">
           <label for="name">Full Name</label>
           <input type="text" id="name" name="name" placeholder="Enter your full name" required>
@@ -34,7 +41,8 @@
         </div>
         <div class="input-box">
           <label for="confirm-password">Confirm Password</label>
-          <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+          <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password"
+            required>
         </div>
         <div class="checkbox">
           <input type="checkbox" id="terms" required>
@@ -48,4 +56,7 @@
     </div>
   </div>
 </body>
+<script src="js/storage.js"></script>
+<script src="js/signup.js"></script>
+
 </html>
