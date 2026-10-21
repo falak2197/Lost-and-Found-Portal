@@ -1,12 +1,11 @@
 // ============================================================
 // signup.js — Handles the Sign Up / Create Account form
-// Concepts used: DOM, events, form validation, localStorage,
-//                arrays, objects, if/else, string methods
+// Concepts used: Promise, DOM, events, form validation, localStorage
 // ============================================================
 
 window.addEventListener("load", function () {
 
-    // --- Get form elements ---
+    // --- References to form elements ---
     var form = document.getElementById("signup-form");
     var nameInput = document.getElementById("name");
     var emailInput = document.getElementById("email");
@@ -17,119 +16,121 @@ window.addEventListener("load", function () {
     var successMsg = document.getElementById("success-message");
     var errorMsg = document.getElementById("error-message");
     var googleBtn = document.querySelector(".google-btn");
+    var submitBtn = form ? (form.querySelector(".signup-submit-btn") || form.querySelector("button[type='submit']")) : null;
 
-
-    // --- Block the Google button — not available in this demo ---
     if (googleBtn) {
         googleBtn.addEventListener("click", function () {
-            alert("Google Sign-In is not available in this local demo. Please use the email and password form.");
+            alert("Google Sign-In is not enabled for local demo. Please register with your email and password.");
         });
     }
 
-
     // --- Helper: show error ---
     function showError(message) {
-        errorMsg.innerText = message;
-        errorMsg.style.display = "block";
-        successMsg.style.display = "none";
+        if (errorMsg) {
+            errorMsg.innerText = message;
+            errorMsg.style.display = "block";
+        }
+        if (successMsg) successMsg.style.display = "none";
     }
-
 
     // --- Helper: show success ---
     function showSuccess(message) {
-        successMsg.innerText = message;
-        successMsg.style.display = "block";
-        errorMsg.style.display = "none";
+        if (successMsg) {
+            successMsg.innerText = message;
+            successMsg.style.display = "block";
+        }
+        if (errorMsg) errorMsg.style.display = "none";
     }
 
-
-    // --- Validate the sign-up form ---
-    // Concept: if/else, string methods (trim, length, indexOf)
+    // --- Validate sign-up inputs ---
     function validateSignup() {
-        // Full name must not be empty
         if (nameInput.value.trim() === "") {
             showError("Please enter your full name.");
+            nameInput.focus();
             return false;
         }
 
-        // Email must have @ symbol
         var email = emailInput.value.trim();
-        if (email === "" || email.indexOf("@") === -1) {
+        if (email === "" || email.indexOf("@") === -1 || email.indexOf(".") === -1) {
             showError("Please enter a valid email address.");
+            emailInput.focus();
             return false;
         }
 
-        // Phone must be at least 7 characters
         var phone = phoneInput.value.trim();
         if (phone === "" || phone.length < 7) {
             showError("Please enter a valid phone number (at least 7 digits).");
+            phoneInput.focus();
             return false;
         }
 
-        // Password must be at least 6 characters
         var password = passwordInput.value;
         if (password.length < 6) {
             showError("Password must be at least 6 characters long.");
+            passwordInput.focus();
             return false;
         }
 
-        // Passwords must match — concept: comparison operator ===
         if (password !== confirmInput.value) {
-            showError("Passwords do not match. Please re-enter.");
+            showError("Passwords do not match. Please verify.");
+            confirmInput.focus();
             return false;
         }
 
-        // Terms checkbox must be ticked
-        if (!termsCheckbox.checked) {
-            showError("You must agree to the Terms & Conditions to create an account.");
+        if (termsCheckbox && !termsCheckbox.checked) {
+            showError("Please accept the Terms & Conditions to create an account.");
             return false;
         }
 
-        // Check for duplicate email — concept: function call, return value
-        if (isEmailTaken(email)) {
-            showError("This email is already registered. Please use a different email or login.");
-            return false;
-        }
-
-        return true;  // all validations passed
+        return true;
     }
 
+    // ============================================================
+    // PROMISE USAGE: Asynchronous User Registration
+    // Using registerUserAsync(newUser) which returns a Promise
+    // ============================================================
+    if (form) {
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
 
-    // --- Handle form submit ---
-    form.addEventListener("submit", function (event) {
-        event.preventDefault();  // stop page reload
+            if (successMsg) successMsg.style.display = "none";
+            if (errorMsg) errorMsg.style.display = "none";
 
-        // Hide previous messages
-        successMsg.style.display = "none";
-        errorMsg.style.display = "none";
+            if (!validateSignup()) {
+                return;
+            }
 
-        if (!validateSignup()) {
-            return;
-        }
+            var newUser = {
+                name: nameInput.value.trim(),
+                email: emailInput.value.trim().toLowerCase(),
+                phone: phoneInput.value.trim(),
+                password: passwordInput.value,
+                registeredAt: new Date().toISOString()
+            };
 
-        // Build a user object — concept: JavaScript objects
-        var newUser = {
-            name: nameInput.value.trim(),
-            email: emailInput.value.trim(),
-            phone: phoneInput.value.trim(),
-            password: passwordInput.value
-            // NOTE: Storing passwords locally is only for demo purposes.
-            // In a real application, passwords should never be stored in plain text.
-        };
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "Creating Account...";
+            }
 
-        // Save the user to localStorage
-        saveUser(newUser);
+            // Call Promise-based register function
+            registerUserAsync(newUser)
+                .then(function (user) {
+                    showSuccess("✅ Account created successfully! Redirecting to Login...");
+                    form.reset();
 
-        // Show success message
-        showSuccess("✅ Account created successfully! Redirecting to Login...");
-
-        // Clear the form
-        form.reset();
-
-        // Redirect to login after 2 seconds
-        setTimeout(function () {
-            window.location.href = "login.html";
-        }, 2000);
-    });
+                    setTimeout(function () {
+                        window.location.href = "login.html";
+                    }, 1500);
+                })
+                .catch(function (error) {
+                    showError(error.message || "Failed to register account.");
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.innerText = "Create Account";
+                    }
+                });
+        });
+    }
 
 });

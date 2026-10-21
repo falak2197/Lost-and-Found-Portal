@@ -211,3 +211,138 @@
     font-weight: 400;
     word-break: break-word;
 }
+
+/* --- Badges and Action buttons --- */
+.new-badge {
+    position: absolute;
+    top: 13px;
+    left: 13px;
+    background: #10b981;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+    z-index: 2;
+}
+
+.delete-btn {
+    width: 100%;
+    background: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fca5a5;
+    padding: 8px 12px;
+    border-radius: 7px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.delete-btn:hover {
+    background: #ef4444;
+    color: #fff;
+    border-color: #dc2626;
+}
+
+.user-greeting {
+    font-size: 14px;
+    color: #374151;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: 6px;
+}
+
+/* --- Toast Notification --- */
+.app-toast {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    background: #111827;
+    color: #fff;
+    padding: 14px 22px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    z-index: 9999;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.app-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.app-toast.success {
+    background: #065f46;
+    border-left: 4px solid #10b981;
+}
+
+.app-toast.error {
+    background: #991b1b;
+    border-left: 4px solid #ef4444;
+}
+
+/* --- Modal Action Blocks --- */
+.modal-contact-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 16px;
+    margin-bottom: 18px;
+}
+
+.modal-contact-card h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: #1e293b;
+}
+
+.contact-quick-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+}
+
+.contact-quick-buttons a {
+    text-decoration: none;
+    padding: 9px 16px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s;
+}
+
+.contact-quick-buttons .call-btn {
+    background: #10b981;
+    color: #fff;
+}
+
+.contact-quick-buttons .call-btn:hover {
+    background: #059669;
+}
+
+.contact-quick-buttons .email-btn {
+    background: #2563eb;
+    color: #fff;
+}
+
+.contact-quick-buttons .email-btn:hover {
+    background: #1d4ed8;
+}
+

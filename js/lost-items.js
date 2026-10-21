@@ -1,13 +1,12 @@
 // ============================================================
 // lost-items.js — Loads and displays lost item reports
-// Concepts used: arrays, objects, loops, DOM manipulation,
-//                localStorage, search/filter, innerHTML
+// Concepts used: Promise, Event Delegation, DOM manipulation,
+//                localStorage, search/filter, modal dialogs
 // ============================================================
 
-// --- Wait for the page to load ---
 window.addEventListener("load", function () {
 
-    // --- Get references to page elements ---
+    // --- References to page elements ---
     var itemsGrid = document.getElementById("items-grid");
     var noResults = document.getElementById("no-results");
     var searchInput = document.getElementById("search");
@@ -20,9 +19,9 @@ window.addEventListener("load", function () {
     var modal = document.getElementById("detail-modal");
     var modalClose = document.getElementById("modal-close");
     var modalContent = document.getElementById("modal-body");
+    var modalTitle = modal ? modal.querySelector(".modal-header h3") : null;
 
-    // --- Define the 6 built-in sample items (static data) ---
-    // Concept: array of objects
+    // --- Built-in sample items (demonstration data) ---
     var sampleItems = [
         {
             id: "sample-lost-1",
@@ -34,7 +33,8 @@ window.addEventListener("load", function () {
             contactName: "Rahul S.",
             contactEmail: "rahul@example.com",
             contactPhone: "9876540001",
-            image: ""
+            image: "",
+            isSample: true
         },
         {
             id: "sample-lost-2",
@@ -46,7 +46,8 @@ window.addEventListener("load", function () {
             contactName: "Priya M.",
             contactEmail: "priya@example.com",
             contactPhone: "9876540002",
-            image: ""
+            image: "",
+            isSample: true
         },
         {
             id: "sample-lost-3",
@@ -58,7 +59,8 @@ window.addEventListener("load", function () {
             contactName: "Arjun K.",
             contactEmail: "arjun@example.com",
             contactPhone: "9876540003",
-            image: ""
+            image: "",
+            isSample: true
         },
         {
             id: "sample-lost-4",
@@ -70,7 +72,8 @@ window.addEventListener("load", function () {
             contactName: "Nisha T.",
             contactEmail: "nisha@example.com",
             contactPhone: "9876540004",
-            image: ""
+            image: "",
+            isSample: true
         },
         {
             id: "sample-lost-5",
@@ -82,7 +85,8 @@ window.addEventListener("load", function () {
             contactName: "Vikram P.",
             contactEmail: "vikram@example.com",
             contactPhone: "9876540005",
-            image: ""
+            image: "",
+            isSample: true
         },
         {
             id: "sample-lost-6",
@@ -94,32 +98,26 @@ window.addEventListener("load", function () {
             contactName: "Anjali R.",
             contactEmail: "anjali@example.com",
             contactPhone: "9876540006",
-            image: ""
+            image: "",
+            isSample: true
         }
     ];
 
+    var defaultPlaceholder = "https://placehold.co/400x250/e8f0fe/2563eb?text=Lost+Item";
 
-    // --- Format a date string into a readable format ---
-    // Concept: string methods, type conversion
+    // --- Format a date string ---
     function formatDate(dateStr) {
         if (!dateStr) return "Unknown Date";
-        // dateStr is in "YYYY-MM-DD" format
         var parts = dateStr.split("-");
-        var year = parts[0];
-        var month = parts[1];
-        var day = parts[2];
-
-        // Map month numbers to names — concept: array, index
+        if (parts.length < 3) return dateStr;
         var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
             "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-        var monthName = monthNames[parseInt(month) - 1];
-
-        return day + " " + monthName + " " + year;
+        var mIdx = parseInt(parts[1], 10) - 1;
+        var monthName = monthNames[mIdx] || parts[1];
+        return parts[2] + " " + monthName + " " + parts[0];
     }
 
-
-    // --- Map category value to a display label ---
-    // Concept: switch statement
+    // --- Category display label ---
     function getCategoryLabel(cat) {
         switch (cat) {
             case "electronics": return "Electronics";
@@ -134,27 +132,52 @@ window.addEventListener("load", function () {
         }
     }
 
+    // --- Helper to get all combined items, excluding deleted sample IDs ---
+    function getAllItems() {
+        var userReports = getLostItems(); // from localStorage
+        var deletedSampleIds = [];
+        try {
+            var d = localStorage.getItem("deletedSampleIds");
+            if (d) deletedSampleIds = JSON.parse(d);
+        } catch (e) {}
 
-    // --- Create one item card element ---
-    // Concept: document.createElement, innerText, appendChild
+        var activeSamples = sampleItems.filter(function (s) {
+            return deletedSampleIds.indexOf(String(s.id).trim()) === -1;
+        });
+
+        // User reports first, then active samples
+        return userReports.concat(activeSamples);
+    }
+
+    // --- Find an item by ID safely ---
+    function findItemById(id) {
+        var all = getAllItems();
+        var targetId = String(id).trim();
+        for (var i = 0; i < all.length; i++) {
+            if (String(all[i].id).trim() === targetId) {
+                return all[i];
+            }
+        }
+        return null;
+    }
+
+    // ============================================================
+    // Helper: Build a single item card
+    // ============================================================
     function createItemCard(item) {
-        // Create the outer card div
         var card = document.createElement("div");
         card.className = "item-card";
 
-        // Build image HTML — use placeholder if no image uploaded
-        var imgSrc = item.image ? item.image : "https://placehold.co/300x200/e8f0fe/2563eb?text=No+Image";
-
-        // Build the card inner HTML safely
-        // Note: we use textContent for user text in the modal, but for
-        // the card we build HTML using string concatenation (beginner approach)
+        var imgSrc = item.image ? item.image : defaultPlaceholder;
         var categoryLabel = getCategoryLabel(item.category);
         var dateLabel = formatDate(item.date);
+        var isUserItem = !item.isSample;
 
         card.innerHTML =
             '<div class="item-image">' +
-            '<img src="' + imgSrc + '" alt="' + categoryLabel + ' image" onerror="this.src=\'https://placehold.co/300x200/e8f0fe/2563eb?text=No+Image\'">' +
+            '<img src="' + imgSrc + '" alt="' + categoryLabel + '" onerror="this.src=\'' + defaultPlaceholder + '\'">' +
             '<span class="status-badge">Lost</span>' +
+            (isUserItem ? '<span class="new-badge">Your Report</span>' : '') +
             '</div>' +
             '<div class="item-content">' +
             '<h3 class="item-title"></h3>' +
@@ -165,12 +188,12 @@ window.addEventListener("load", function () {
             '<div><strong>Date</strong><span class="date-text"></span></div>' +
             '</div>' +
             '<div class="card-buttons">' +
-            '<button class="view-btn" data-id="' + item.id + '">View Details</button>' +
-            '<button class="match-btn" data-id="' + item.id + '">Report Match</button>' +
+            '<button type="button" class="view-btn" data-id="' + item.id + '">View Details</button>' +
+            '<button type="button" class="match-btn" data-id="' + item.id + '">🤝 Report Match</button>' +
             '</div>' +
+            '<button type="button" class="delete-btn" data-id="' + item.id + '" style="margin-top:10px;">🗑️ Delete Report</button>' +
             '</div>';
 
-        // Use textContent for user-provided text to prevent XSS
         card.querySelector(".item-title").textContent = item.itemName;
         card.querySelector(".category").textContent = categoryLabel;
         card.querySelector(".item-desc").textContent = item.description;
@@ -180,13 +203,17 @@ window.addEventListener("load", function () {
         return card;
     }
 
+    // ============================================================
+    // MODAL HANDLERS
+    // ============================================================
 
-    // --- Show the detail modal for a specific item ---
-    function openModal(item) {
+    // 1. View Item Details Modal
+    function openViewModal(item) {
+        if (modalTitle) modalTitle.textContent = "Lost Item Details";
+
         var categoryLabel = getCategoryLabel(item.category);
         var dateLabel = formatDate(item.date);
 
-        // Build modal content using textContent to stay safe
         modalContent.innerHTML =
             '<div class="modal-item-info">' +
             (item.image ? '<img src="' + item.image + '" alt="Item image" class="modal-img">' : '') +
@@ -195,176 +222,299 @@ window.addEventListener("load", function () {
             '<tr><th>Category</th><td class="m-cat"></td></tr>' +
             '<tr><th>Location Lost</th><td class="m-loc"></td></tr>' +
             '<tr><th>Date Lost</th><td class="m-date"></td></tr>' +
+            (item.time ? '<tr><th>Approx. Time</th><td class="m-time"></td></tr>' : '') +
             '<tr><th>Description</th><td class="m-desc"></td></tr>' +
+            (item.additionalDetails ? '<tr><th>Additional Info</th><td class="m-addl"></td></tr>' : '') +
             '<tr><th>Contact Name</th><td class="m-cname"></td></tr>' +
             '<tr><th>Contact Email</th><td class="m-cemail"></td></tr>' +
             '<tr><th>Contact Phone</th><td class="m-cphone"></td></tr>' +
             '</table>' +
+            '<div style="margin-top:20px;display:flex;gap:12px;">' +
+            '<button type="button" class="primary-btn match-from-modal-btn" data-id="' + item.id + '" style="flex:1;cursor:pointer;border:none;">🤝 Report a Match</button>' +
+            '<button type="button" class="delete-btn delete-from-modal-btn" data-id="' + item.id + '" style="flex:1;">🗑️ Delete Report</button>' +
+            '</div>' +
             '</div>';
 
-        // Set text content safely
         modalContent.querySelector(".m-name").textContent = item.itemName;
         modalContent.querySelector(".m-cat").textContent = categoryLabel;
         modalContent.querySelector(".m-loc").textContent = item.location;
         modalContent.querySelector(".m-date").textContent = dateLabel;
+        if (item.time && modalContent.querySelector(".m-time")) {
+            modalContent.querySelector(".m-time").textContent = item.time;
+        }
         modalContent.querySelector(".m-desc").textContent = item.description;
+        if (item.additionalDetails && modalContent.querySelector(".m-addl")) {
+            modalContent.querySelector(".m-addl").textContent = item.additionalDetails;
+        }
         modalContent.querySelector(".m-cname").textContent = item.contactName || "Not provided";
         modalContent.querySelector(".m-cemail").textContent = item.contactEmail || "Not provided";
         modalContent.querySelector(".m-cphone").textContent = item.contactPhone || "Not provided";
 
-        modal.style.display = "flex";  // show modal
+        // Bind in-modal buttons
+        var matchModalBtn = modalContent.querySelector(".match-from-modal-btn");
+        if (matchModalBtn) {
+            matchModalBtn.addEventListener("click", function () {
+                openReportMatchModal(item);
+            });
+        }
+
+        var deleteModalBtn = modalContent.querySelector(".delete-from-modal-btn");
+        if (deleteModalBtn) {
+            deleteModalBtn.addEventListener("click", function () {
+                openDeleteConfirmationModal(item);
+            });
+        }
+
+        modal.style.display = "flex";
     }
 
+    // 2. Report Match Modal (Replaces old alert)
+    function openReportMatchModal(item) {
+        if (modalTitle) modalTitle.textContent = "🤝 Report Match for: " + item.itemName;
 
-    // --- Render (display) a list of items on the page ---
-    // Concept: for loop, DOM manipulation, array length
+        var loggedIn = getLoggedInUser();
+        var defaultName = loggedIn ? loggedIn.name : "";
+        var defaultContact = loggedIn ? (loggedIn.email || loggedIn.phone) : "";
+
+        modalContent.innerHTML =
+            '<div style="font-size:14px;color:#475569;line-height:1.6;">' +
+            '<div class="modal-contact-card">' +
+            '<h4>Owner Contact Information:</h4>' +
+            '<p><strong>Name:</strong> ' + (item.contactName || "Not provided") + '</p>' +
+            '<p><strong>Email:</strong> ' + (item.contactEmail || "Not provided") + '</p>' +
+            '<p><strong>Phone:</strong> ' + (item.contactPhone || "Not provided") + '</p>' +
+            '<div class="contact-quick-buttons">' +
+            (item.contactPhone ? '<a href="tel:' + item.contactPhone + '" class="call-btn">📞 Call ' + item.contactPhone + '</a>' : '') +
+            (item.contactEmail ? '<a href="mailto:' + item.contactEmail + '?subject=Found%20Your%20Lost%20Item:%20' + encodeURIComponent(item.itemName) + '" class="email-btn">✉️ Email Owner</a>' : '') +
+            '</div>' +
+            '</div>' +
+            '<form id="match-notify-form" style="margin-top:16px;">' +
+            '<h4 style="margin-bottom:8px;color:#1e293b;">Send Direct Match Notification:</h4>' +
+            '<div style="margin-bottom:12px;">' +
+            '<label style="display:block;margin-bottom:4px;font-weight:600;font-size:13px;">Your Name / Contact Info:</label>' +
+            '<input type="text" id="finder-contact" placeholder="e.g. Sarah (9876543210 / sarah@gmail.com)" required value="' + defaultContact + '" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;">' +
+            '</div>' +
+            '<div style="margin-bottom:14px;">' +
+            '<label style="display:block;margin-bottom:4px;font-weight:600;font-size:13px;">Where or when did you find it?</label>' +
+            '<textarea id="match-notes" rows="3" placeholder="e.g. Found on 2nd floor library near the window. Please contact me to collect it." required style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;"></textarea>' +
+            '</div>' +
+            '<div id="match-feedback" style="display:none;padding:10px;border-radius:8px;margin-bottom:12px;font-weight:600;"></div>' +
+            '<button type="submit" class="primary-btn" id="send-match-btn" style="width:100%;cursor:pointer;border:none;padding:12px;">Send Match Notification</button>' +
+            '</form>' +
+            '</div>';
+
+        var matchForm = document.getElementById("match-notify-form");
+        var matchFeedback = document.getElementById("match-feedback");
+        var sendMatchBtn = document.getElementById("send-match-btn");
+
+        matchForm.addEventListener("submit", function (ev) {
+            ev.preventDefault();
+
+            var finderContact = document.getElementById("finder-contact").value.trim();
+            var notes = document.getElementById("match-notes").value.trim();
+
+            if (!finderContact || !notes) return;
+
+            sendMatchBtn.disabled = true;
+            sendMatchBtn.textContent = "Recording Match Notification...";
+
+            // PROMISE USAGE: Save match notification
+            saveMatchNotificationAsync({
+                id: generateId(),
+                itemId: item.id,
+                itemName: item.itemName,
+                ownerName: item.contactName,
+                ownerEmail: item.contactEmail,
+                finderContact: finderContact,
+                notes: notes,
+                timestamp: new Date().toISOString()
+            })
+                .then(function () {
+                    matchFeedback.style.display = "block";
+                    matchFeedback.style.background = "#dcfce7";
+                    matchFeedback.style.color = "#15803d";
+                    matchFeedback.innerHTML = "✅ Match recorded! Owner has been linked with your details.";
+                    sendMatchBtn.textContent = "Sent!";
+                    showToastNotification("✅ Match reported for " + item.itemName + "!");
+
+                    setTimeout(function () {
+                        modal.style.display = "none";
+                    }, 1800);
+                })
+                .catch(function (err) {
+                    matchFeedback.style.display = "block";
+                    matchFeedback.style.background = "#fee2e2";
+                    matchFeedback.style.color = "#b91c1c";
+                    matchFeedback.textContent = "Error: " + err.message;
+                    sendMatchBtn.disabled = false;
+                    sendMatchBtn.textContent = "Send Match Notification";
+                });
+        });
+
+        modal.style.display = "flex";
+    }
+
+    // 3. In-Modal Delete Confirmation (No flaky browser confirm() dialog)
+    function openDeleteConfirmationModal(item) {
+        if (modalTitle) modalTitle.textContent = "🗑️ Confirm Delete Report";
+
+        modalContent.innerHTML =
+            '<div style="text-align:center;padding:10px 0;">' +
+            '<p style="font-size:16px;color:#334155;margin-bottom:12px;">' +
+            'Are you sure you want to permanently delete the report for:<br>' +
+            '<strong style="font-size:18px;color:#1e293b;">"' + item.itemName + '"</strong>?' +
+            '</p>' +
+            '<p style="font-size:13px;color:#64748b;margin-bottom:24px;">This action will remove the listing from the portal.</p>' +
+            '<div style="display:flex;gap:12px;justify-content:center;">' +
+            '<button type="button" id="confirm-delete-action-btn" class="delete-btn" style="width:auto;padding:10px 24px;font-size:14px;">Yes, Delete Report</button>' +
+            '<button type="button" id="cancel-delete-action-btn" class="secondary-btn" style="padding:10px 24px;font-size:14px;cursor:pointer;">Cancel</button>' +
+            '</div>' +
+            '</div>';
+
+        document.getElementById("cancel-delete-action-btn").addEventListener("click", function () {
+            modal.style.display = "none";
+        });
+
+        document.getElementById("confirm-delete-action-btn").addEventListener("click", function () {
+            var btn = this;
+            btn.disabled = true;
+            btn.textContent = "Deleting...";
+
+            // PROMISE USAGE: deleteLostItemAsync
+            deleteLostItemAsync(item.id)
+                .then(function () {
+                    modal.style.display = "none";
+                    showToastNotification("🗑️ Report for \"" + item.itemName + "\" has been deleted.");
+                    loadAndRender();
+                })
+                .catch(function (err) {
+                    alert("Error deleting report: " + err.message);
+                    btn.disabled = false;
+                    btn.textContent = "Yes, Delete Report";
+                });
+        });
+
+        modal.style.display = "flex";
+    }
+
+    // ============================================================
+    // EVENT DELEGATION: Handles all clicks on itemsGrid reliably
+    // ============================================================
+    if (itemsGrid) {
+        itemsGrid.addEventListener("click", function (event) {
+            var targetBtn = event.target.closest("button");
+            if (!targetBtn) return;
+
+            var itemId = targetBtn.getAttribute("data-id");
+            if (!itemId) return;
+
+            var item = findItemById(itemId);
+            if (!item) {
+                console.warn("Item not found for id:", itemId);
+                return;
+            }
+
+            if (targetBtn.classList.contains("view-btn")) {
+                openViewModal(item);
+            } else if (targetBtn.classList.contains("match-btn")) {
+                openReportMatchModal(item);
+            } else if (targetBtn.classList.contains("delete-btn")) {
+                openDeleteConfirmationModal(item);
+            }
+        });
+    }
+
+    // --- Render list of items to the page ---
     function renderItems(itemsArray) {
-        // Clear what is currently shown
         itemsGrid.innerHTML = "";
 
-        // If no items, show the "no results" message
-        if (itemsArray.length === 0) {
-            noResults.style.display = "block";
+        if (!itemsArray || itemsArray.length === 0) {
+            if (noResults) noResults.style.display = "block";
             return;
         }
 
-        // Hide "no results" message
-        noResults.style.display = "none";
+        if (noResults) noResults.style.display = "none";
 
-        // Loop through items and create a card for each
         for (var i = 0; i < itemsArray.length; i++) {
             var card = createItemCard(itemsArray[i]);
             itemsGrid.appendChild(card);
         }
-
-        // Add click events to all "View Details" buttons
-        var viewBtns = itemsGrid.querySelectorAll(".view-btn");
-        for (var j = 0; j < viewBtns.length; j++) {
-            viewBtns[j].addEventListener("click", function (e) {
-                var itemId = e.target.getAttribute("data-id");
-                var allItems = sampleItems.concat(getLostItems());
-                // Find the item that matches the clicked ID
-                for (var k = 0; k < allItems.length; k++) {
-                    if (allItems[k].id === itemId) {
-                        openModal(allItems[k]);
-                        break;
-                    }
-                }
-            });
-        }
-
-        // Add click events to all "Report Match" buttons
-        var matchBtns = itemsGrid.querySelectorAll(".match-btn");
-        for (var m = 0; m < matchBtns.length; m++) {
-            matchBtns[m].addEventListener("click", function (e) {
-                var itemId = e.target.getAttribute("data-id");
-                var allItems = sampleItems.concat(getLostItems());
-                var found = null;
-                for (var n = 0; n < allItems.length; n++) {
-                    if (allItems[n].id === itemId) {
-                        found = allItems[n];
-                        break;
-                    }
-                }
-                if (found) {
-                    // Use confirm() as a simple "I found this item" action
-                    var confirmed = confirm(
-                        'Do you think you found "' + found.itemName + '"?\n\n' +
-                        'Contact the reporter:\n' +
-                        'Name: ' + (found.contactName || "Not provided") + '\n' +
-                        'Email: ' + (found.contactEmail || "Not provided") + '\n' +
-                        'Phone: ' + (found.contactPhone || "Not provided")
-                    );
-                    // confirmed is true if user clicked OK, false if Cancel
-                }
-            });
-        }
     }
 
-
-    // --- Search and filter function ---
-    // Concept: array filtering, string methods (toLowerCase, indexOf)
+    // --- Search and filter ---
     function searchAndFilter() {
-        // Get the values the user entered / selected
-        var searchVal = searchInput.value.trim().toLowerCase();
-        var catVal = catFilter.value.toLowerCase();
-        var locVal = locFilter.value.toLowerCase();
-        var dateVal = dateFilter.value;
+        var searchVal = searchInput ? searchInput.value.trim().toLowerCase() : "";
+        var catVal = catFilter ? catFilter.value.toLowerCase() : "";
+        var locVal = locFilter ? locFilter.value.toLowerCase() : "";
+        var dateVal = dateFilter ? dateFilter.value : "";
 
-        // Combine sample items + user-submitted items
-        var allItems = sampleItems.concat(getLostItems());
-
-        // Filter the array using a for loop
+        var allItems = getAllItems();
         var results = [];
 
         for (var i = 0; i < allItems.length; i++) {
             var item = allItems[i];
-            var matches = true;  // assume this item matches; disprove below
+            var matches = true;
 
-            // Check search text — look in name, description, location
+            // Search text
             if (searchVal !== "") {
-                var nameMatch = item.itemName.toLowerCase().indexOf(searchVal) !== -1;
-                var descMatch = item.description.toLowerCase().indexOf(searchVal) !== -1;
-                var locMatch = item.location.toLowerCase().indexOf(searchVal) !== -1;
-
+                var nameMatch = (item.itemName || "").toLowerCase().indexOf(searchVal) !== -1;
+                var descMatch = (item.description || "").toLowerCase().indexOf(searchVal) !== -1;
+                var locMatch = (item.location || "").toLowerCase().indexOf(searchVal) !== -1;
                 if (!nameMatch && !descMatch && !locMatch) {
-                    matches = false;  // no text match
-                }
-            }
-
-            // Check category filter
-            if (catVal !== "" && item.category !== catVal) {
-                matches = false;
-            }
-
-            // Check location filter — compare lowercased location text
-            if (locVal !== "") {
-                var locationLower = item.location.toLowerCase();
-                var catValMap = {
-                    "college": "college",
-                    "market": "market",
-                    "transport": ["bus", "railway", "station"],
-                    "office": "office",
-                    "park": "park",
-                    "other": "other"
-                };
-
-                // Location filter uses keyword matching
-                if (locVal === "transport") {
-                    if (locationLower.indexOf("bus") === -1 &&
-                        locationLower.indexOf("railway") === -1 &&
-                        locationLower.indexOf("station") === -1) {
-                        matches = false;
-                    }
-                } else if (locationLower.indexOf(locVal) === -1) {
                     matches = false;
                 }
             }
 
-            // Check date filter
+            // Category filter
+            if (catVal !== "" && (item.category || "").toLowerCase() !== catVal) {
+                matches = false;
+            }
+
+            // Location filter
+            if (locVal !== "") {
+                var itemLoc = (item.location || "").toLowerCase();
+                if (locVal === "transport") {
+                    if (itemLoc.indexOf("bus") === -1 && itemLoc.indexOf("railway") === -1 && itemLoc.indexOf("station") === -1) {
+                        matches = false;
+                    }
+                } else if (itemLoc.indexOf(locVal) === -1) {
+                    matches = false;
+                }
+            }
+
+            // Date filter
             if (dateVal !== "" && item.date !== dateVal) {
                 matches = false;
             }
 
-            // If all checks passed, add to results
             if (matches) {
                 results.push(item);
             }
         }
 
-        // Display the filtered results
         renderItems(results);
     }
 
+    // ============================================================
+    // PROMISE USAGE: Asynchronous initial item loading
+    // ============================================================
+    function loadAndRender() {
+        getLostItemsAsync()
+            .then(function () {
+                var allItems = getAllItems();
+                renderItems(allItems);
+            })
+            .catch(function () {
+                renderItems(sampleItems);
+            });
+    }
 
-    // --- Modal close button ---
+    // --- Modal close handlers ---
     if (modalClose) {
         modalClose.addEventListener("click", function () {
             modal.style.display = "none";
         });
     }
-
-    // --- Close modal when clicking outside the content area ---
     if (modal) {
         modal.addEventListener("click", function (e) {
             if (e.target === modal) {
@@ -373,27 +523,26 @@ window.addEventListener("load", function () {
         });
     }
 
-
-    // --- Search button click event ---
-    searchBtn.addEventListener("click", function () {
-        searchAndFilter();
-    });
-
-    // --- Also search when user presses Enter in the search box ---
-    searchInput.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-            searchAndFilter();
+    // Close on Escape key
+    window.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && modal && modal.style.display === "flex") {
+            modal.style.display = "none";
         }
     });
 
-    // --- Live filter on category/location/date change ---
-    catFilter.addEventListener("change", searchAndFilter);
-    locFilter.addEventListener("change", searchAndFilter);
-    dateFilter.addEventListener("change", searchAndFilter);
+    // --- Filter listeners ---
+    if (searchBtn) searchBtn.addEventListener("click", searchAndFilter);
+    if (searchInput) {
+        searchInput.addEventListener("input", searchAndFilter);
+        searchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") searchAndFilter();
+        });
+    }
+    if (catFilter) catFilter.addEventListener("change", searchAndFilter);
+    if (locFilter) locFilter.addEventListener("change", searchAndFilter);
+    if (dateFilter) dateFilter.addEventListener("change", searchAndFilter);
 
-
-    // --- Initial load: show all items ---
-    var allItems = sampleItems.concat(getLostItems());
-    renderItems(allItems);
+    // Initial load
+    loadAndRender();
 
 });
