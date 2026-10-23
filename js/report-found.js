@@ -168,6 +168,17 @@ window.addEventListener("load", function () {
             event.preventDefault();
             hideMessages();
 
+            // Verify authentication: only logged-in users can report items
+            var currentUser = getLoggedInUser();
+            if (!currentUser || !currentUser.id) {
+                showError("Authentication required: You must be logged in to submit a found item report. Please log in first.");
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = "Submit Report";
+                }
+                return;
+            }
+
             if (!validateForm()) {
                 return;
             }
@@ -187,9 +198,10 @@ window.addEventListener("load", function () {
 
             imagePromise
                 .then(function (finalImageData) {
-                    // Build report object
+                    // Build report object with stable creator identity
                     var report = {
                         id: generateId(),
+                        userId: currentUser.id, // Stable unique ID of report owner
                         type: "found",
                         itemName: itemNameInput.value.trim(),
                         category: categoryInput.value,

@@ -56,15 +56,21 @@ function saveFoundItem(itemObject) {
     localStorage.setItem(FOUND_ITEMS_KEY, JSON.stringify(existing));
 }
 
+// --- Generate a unique ID for registered users ---
+function generateUserId() {
+    return "user_" + Date.now() + "_" + Math.floor(Math.random() * 1000000);
+}
+
 // --- Get all registered users ---
 function getUsers() {
     var data = localStorage.getItem(USERS_KEY);
     var demoUser = {
+        id: "user_demo_default",
         name: "Demo User",
         email: "user@example.com",
         phone: "9876543210",
         password: "password123",
-        registeredAt: new Date().toISOString()
+        registeredAt: "2026-01-01T00:00:00.000Z"
     };
 
     if (data === null) {
@@ -76,14 +82,26 @@ function getUsers() {
         var parsed = JSON.parse(data);
         if (!Array.isArray(parsed)) parsed = [];
         var hasDemo = false;
+        var needsSave = false;
+
         for (var i = 0; i < parsed.length; i++) {
-            if ((parsed[i].email || "").toLowerCase().trim() === "user@example.com") {
+            var u = parsed[i];
+            if ((u.email || "").toLowerCase().trim() === "user@example.com") {
                 hasDemo = true;
-                break;
+                if (!u.id) {
+                    u.id = "user_demo_default";
+                    needsSave = true;
+                }
+            } else if (!u.id) {
+                u.id = generateUserId();
+                needsSave = true;
             }
         }
         if (!hasDemo) {
             parsed.unshift(demoUser);
+            needsSave = true;
+        }
+        if (needsSave) {
             localStorage.setItem(USERS_KEY, JSON.stringify(parsed));
         }
         return parsed;
@@ -94,6 +112,9 @@ function getUsers() {
 
 // --- Save a new user account ---
 function saveUser(userObject) {
+    if (!userObject.id) {
+        userObject.id = generateUserId();
+    }
     var existing = getUsers();
     existing.push(userObject);
     localStorage.setItem(USERS_KEY, JSON.stringify(existing));
@@ -138,7 +159,23 @@ function getLoggedInUser() {
         return null;
     }
     try {
-        return JSON.parse(data);
+        var user = JSON.parse(data);
+        if (user && !user.id) {
+            // Find user in registered list to preserve stable ID
+            var users = getUsers();
+            var cleanEmail = (user.email || "").toLowerCase().trim();
+            for (var i = 0; i < users.length; i++) {
+                if ((users[i].email || "").toLowerCase().trim() === cleanEmail && users[i].id) {
+                    user.id = users[i].id;
+                    break;
+                }
+            }
+            if (!user.id) {
+                user.id = (cleanEmail === "user@example.com") ? "user_demo_default" : generateUserId();
+            }
+            localStorage.setItem(LOGGED_IN_KEY, JSON.stringify(user));
+        }
+        return user;
     } catch (e) {
         return null;
     }
@@ -152,6 +189,14 @@ function logoutUser() {
 // --- Generate a unique ID for each item report ---
 function generateId() {
     return "item_" + Date.now() + "_" + Math.floor(Math.random() * 1000);
+}
+
+// --- Reset portal demo data (helper for testing and reset) ---
+function resetPortalDemoData() {
+    localStorage.removeItem(LOST_ITEMS_KEY);
+    localStorage.removeItem(FOUND_ITEMS_KEY);
+    localStorage.removeItem("deletedSampleIds");
+    localStorage.removeItem("itemMatches");
 }
 
 
@@ -259,6 +304,17 @@ function saveLostItemAsync(itemObject) {
             return;
         }
 
+        // Validate authentication and creator identity
+        var currentUser = getLoggedInUser();
+        if (!itemObject.userId) {
+            if (currentUser && currentUser.id) {
+                itemObject.userId = currentUser.id;
+            } else {
+                reject(new Error("Authentication required: You must be logged in to submit a report."));
+                return;
+            }
+        }
+
         if (!itemObject.itemName || !itemObject.category || !itemObject.location || !itemObject.date) {
             reject(new Error("Missing mandatory fields (item name, category, location, date)."));
             return;
@@ -288,6 +344,17 @@ function saveFoundItemAsync(itemObject) {
         if (!itemObject) {
             reject(new Error("Item data is missing."));
             return;
+        }
+
+        // Validate authentication and creator identity
+        var currentUser = getLoggedInUser();
+        if (!itemObject.userId) {
+            if (currentUser && currentUser.id) {
+                itemObject.userId = currentUser.id;
+            } else {
+                reject(new Error("Authentication required: You must be logged in to submit a report."));
+                return;
+            }
         }
 
         if (!itemObject.itemName || !itemObject.category || !itemObject.location || !itemObject.date) {
@@ -340,7 +407,8 @@ function getFoundItemsAsync() {
 
 /**
  * PROMISE 6: deleteLostItemAsync
- * Deletes a registered lost item by ID.
+ * Deletes a registered lost item by ID with ownership verification.
+ * Only the user who originally created the report is allowed to delete it.
  *
  * @param {string} id - The ID of the report to remove
  * @returns {Promise<Array>} Resolves with updated array of items
@@ -348,23 +416,52 @@ function getFoundItemsAsync() {
 function deleteLostItemAsync(id) {
     return new Promise(function (resolve, reject) {
         try {
-            var targetId = String(id).trim();
+            var targetId = String(id || "").trim();
+            if (!targetId) {
+                reject(new Error("Invalid report ID."));
+                return;
+            }
+
+            // 1. Verify user authentication
+            var currentUser = getLoggedInUser();
+            if (!currentUser || !currentUser.id) {
+                reject(new Error("Authentication required: You must be logged in to delete a report."));
+                return;
+            }
+
+            // 2. Find the report in stored lost items
             var items = getLostItems();
+            var report = null;
+            for (var i = 0; i < items.length; i++) {
+                if (String(items[i].id).trim() === targetId) {
+                    report = items[i];
+                    break;
+                }
+            }
+
+            // 3. Reject if report does not exist
+            if (!report) {
+                reject(new Error("Report not found."));
+                return;
+            }
+
+            // 4. Reject if report has no valid owner ID (legacy/demo reports cannot be deleted by ordinary users)
+            if (!report.userId) {
+                reject(new Error("Unauthorized: This report has unknown ownership and cannot be deleted."));
+                return;
+            }
+
+            // 5. Verify that the logged-in user's stable ID matches the report's creator ID
+            if (String(report.userId).trim() !== String(currentUser.id).trim()) {
+                reject(new Error("Unauthorized: You can only delete reports that you created."));
+                return;
+            }
+
+            // 6. Ownership confirmed -> delete report and update storage
             var filtered = items.filter(function (it) {
                 return String(it.id).trim() !== targetId;
             });
             localStorage.setItem(LOST_ITEMS_KEY, JSON.stringify(filtered));
-
-            // Also keep track of deleted sample IDs if applicable
-            var deletedSamples = [];
-            try {
-                var d = localStorage.getItem("deletedSampleIds");
-                if (d) deletedSamples = JSON.parse(d);
-            } catch (e) {}
-            if (deletedSamples.indexOf(targetId) === -1) {
-                deletedSamples.push(targetId);
-                localStorage.setItem("deletedSampleIds", JSON.stringify(deletedSamples));
-            }
 
             resolve(filtered);
         } catch (err) {
@@ -376,7 +473,8 @@ function deleteLostItemAsync(id) {
 
 /**
  * PROMISE 7: deleteFoundItemAsync
- * Deletes a registered found item by ID.
+ * Deletes a registered found item by ID with ownership verification.
+ * Only the user who originally created the report is allowed to delete it.
  *
  * @param {string} id - The ID of the report to remove
  * @returns {Promise<Array>} Resolves with updated array of items
@@ -384,23 +482,52 @@ function deleteLostItemAsync(id) {
 function deleteFoundItemAsync(id) {
     return new Promise(function (resolve, reject) {
         try {
-            var targetId = String(id).trim();
+            var targetId = String(id || "").trim();
+            if (!targetId) {
+                reject(new Error("Invalid report ID."));
+                return;
+            }
+
+            // 1. Verify user authentication
+            var currentUser = getLoggedInUser();
+            if (!currentUser || !currentUser.id) {
+                reject(new Error("Authentication required: You must be logged in to delete a report."));
+                return;
+            }
+
+            // 2. Find the report in stored found items
             var items = getFoundItems();
+            var report = null;
+            for (var i = 0; i < items.length; i++) {
+                if (String(items[i].id).trim() === targetId) {
+                    report = items[i];
+                    break;
+                }
+            }
+
+            // 3. Reject if report does not exist
+            if (!report) {
+                reject(new Error("Report not found."));
+                return;
+            }
+
+            // 4. Reject if report has no valid owner ID (legacy/demo reports cannot be deleted by ordinary users)
+            if (!report.userId) {
+                reject(new Error("Unauthorized: This report has unknown ownership and cannot be deleted."));
+                return;
+            }
+
+            // 5. Verify that the logged-in user's stable ID matches the report's creator ID
+            if (String(report.userId).trim() !== String(currentUser.id).trim()) {
+                reject(new Error("Unauthorized: You can only delete reports that you created."));
+                return;
+            }
+
+            // 6. Ownership confirmed -> delete report and update storage
             var filtered = items.filter(function (it) {
                 return String(it.id).trim() !== targetId;
             });
             localStorage.setItem(FOUND_ITEMS_KEY, JSON.stringify(filtered));
-
-            // Also keep track of deleted sample IDs
-            var deletedSamples = [];
-            try {
-                var d = localStorage.getItem("deletedSampleIds");
-                if (d) deletedSamples = JSON.parse(d);
-            } catch (e) {}
-            if (deletedSamples.indexOf(targetId) === -1) {
-                deletedSamples.push(targetId);
-                localStorage.setItem("deletedSampleIds", JSON.stringify(deletedSamples));
-            }
 
             resolve(filtered);
         } catch (err) {
@@ -472,6 +599,9 @@ function registerUserAsync(user) {
         }
 
         try {
+            if (!user.id) {
+                user.id = generateUserId();
+            }
             saveUser(user);
             resolve(user);
         } catch (e) {
@@ -518,6 +648,19 @@ function loginUserAsync(email, password) {
         if (storedPass !== cleanPass && userFoundByEmail.password !== password) {
             reject(new Error("Incorrect password for " + cleanEmail + ". Please verify and try again."));
             return;
+        }
+
+        // Guarantee stable user ID exists
+        if (!userFoundByEmail.id) {
+            userFoundByEmail.id = (cleanEmail === "user@example.com") ? "user_demo_default" : generateUserId();
+            var allUsers = getUsers();
+            for (var u = 0; u < allUsers.length; u++) {
+                if ((allUsers[u].email || "").toLowerCase().trim() === cleanEmail) {
+                    allUsers[u].id = userFoundByEmail.id;
+                    break;
+                }
+            }
+            localStorage.setItem(USERS_KEY, JSON.stringify(allUsers));
         }
 
         setLoggedInUser(userFoundByEmail);

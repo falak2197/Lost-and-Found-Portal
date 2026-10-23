@@ -101,6 +101,7 @@ window.addEventListener("load", function () {
             }
 
             var newUser = {
+                id: generateUserId(),
                 name: nameInput.value.trim(),
                 email: emailInput.value.trim().toLowerCase(),
                 phone: phoneInput.value.trim(),

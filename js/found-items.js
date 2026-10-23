@@ -139,7 +139,7 @@ window.addEventListener("load", function () {
         try {
             var d = localStorage.getItem("deletedSampleIds");
             if (d) deletedSampleIds = JSON.parse(d);
-        } catch (e) {}
+        } catch (e) { }
 
         var activeSamples = sampleItems.filter(function (s) {
             return deletedSampleIds.indexOf(String(s.id).trim()) === -1;
@@ -160,6 +160,14 @@ window.addEventListener("load", function () {
         return null;
     }
 
+    // --- Helper to check if current logged-in user is the report owner ---
+    function isItemOwner(item) {
+        if (!item || !item.userId) return false;
+        var currentUser = getLoggedInUser();
+        if (!currentUser || !currentUser.id) return false;
+        return String(currentUser.id).trim() === String(item.userId).trim();
+    }
+
     // ============================================================
     // Helper: Create a found item card
     // ============================================================
@@ -170,13 +178,13 @@ window.addEventListener("load", function () {
         var imgSrc = item.image ? item.image : defaultPlaceholder;
         var categoryLabel = getCategoryLabel(item.category);
         var dateLabel = formatDate(item.date);
-        var isUserItem = !item.isSample;
+        var isOwner = isItemOwner(item);
 
         card.innerHTML =
             '<div class="item-image">' +
             '<img src="' + imgSrc + '" alt="' + categoryLabel + '" onerror="this.src=\'' + defaultPlaceholder + '\'">' +
             '<span class="status-badge found-badge">Found</span>' +
-            (isUserItem ? '<span class="new-badge">Your Report</span>' : '') +
+            (isOwner ? '<span class="new-badge">Your Report</span>' : '') +
             '</div>' +
             '<div class="item-content">' +
             '<h3 class="item-title"></h3>' +
@@ -190,7 +198,7 @@ window.addEventListener("load", function () {
             '<button type="button" class="view-btn" data-id="' + item.id + '">View Details</button>' +
             '<button type="button" class="contact-btn" data-id="' + item.id + '">📞 Contact Finder</button>' +
             '</div>' +
-            '<button type="button" class="delete-btn" data-id="' + item.id + '" style="margin-top:10px;">🗑️ Delete Report</button>' +
+            (isOwner ? '<button type="button" class="delete-btn" data-id="' + item.id + '" style="margin-top:10px;">🗑️ Delete Report</button>' : '') +
             '</div>';
 
         card.querySelector(".item-title").textContent = item.itemName;
@@ -212,6 +220,7 @@ window.addEventListener("load", function () {
 
         var categoryLabel = getCategoryLabel(item.category);
         var dateLabel = formatDate(item.date);
+        var isOwner = isItemOwner(item);
 
         modalContent.innerHTML =
             '<div class="modal-item-info">' +
@@ -230,7 +239,7 @@ window.addEventListener("load", function () {
             '</table>' +
             '<div style="margin-top:20px;display:flex;gap:12px;">' +
             '<button type="button" class="primary-btn contact-from-modal-btn" data-id="' + item.id + '" style="flex:1;cursor:pointer;border:none;">📞 Contact Finder</button>' +
-            '<button type="button" class="delete-btn delete-from-modal-btn" data-id="' + item.id + '" style="flex:1;">🗑️ Delete Report</button>' +
+            (isOwner ? '<button type="button" class="delete-btn delete-from-modal-btn" data-id="' + item.id + '" style="flex:1;">🗑️ Delete Report</button>' : '') +
             '</div>' +
             '</div>';
 
@@ -350,6 +359,12 @@ window.addEventListener("load", function () {
 
     // 3. In-Modal Delete Confirmation
     function openDeleteConfirmationModal(item) {
+        // Enforce ownership check before displaying confirmation modal
+        if (!isItemOwner(item)) {
+            alert("Unauthorized: You can only delete reports that you created.");
+            return;
+        }
+
         if (modalTitle) modalTitle.textContent = "🗑️ Confirm Delete Report";
 
         modalContent.innerHTML =
@@ -382,7 +397,7 @@ window.addEventListener("load", function () {
                     loadAndRender();
                 })
                 .catch(function (err) {
-                    alert("Error deleting report: " + err.message);
+                    alert("Error deleting report: " + (err.message || "Unauthorized action."));
                     btn.disabled = false;
                     btn.textContent = "Yes, Delete Report";
                 });
@@ -413,6 +428,10 @@ window.addEventListener("load", function () {
             } else if (targetBtn.classList.contains("contact-btn")) {
                 openContactFinderModal(item);
             } else if (targetBtn.classList.contains("delete-btn")) {
+                if (!isItemOwner(item)) {
+                    alert("Unauthorized: You can only delete reports that you created.");
+                    return;
+                }
                 openDeleteConfirmationModal(item);
             }
         });
